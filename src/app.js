@@ -2,26 +2,27 @@ const express = require("express");
 
 const app = express();
 
-const {adminAuth, userAuth} = require("./middlewares/auth")
-//one handler can have muliple route handler 
-// middleware chain, 
-//handle auth middleware for all request, Get Post
-
-app.use("/admin",adminAuth);
-
-
-app.get("/user", userAuth,(req,res)=> {
-    res.send("User Data Sent")
+app.use("/", (err, req, res,next)=> {
+    if(err){
+        res.status(500).send("Something went wrong");
+    }
 })
 
-app.get("/admin/getAllData", (req,res) => {
-    //logic , of checking ,  check if the request is authorized
-    res.send("All data sent")
+
+app.get("/getUserData",(req,res)=> {
+    // logic of db call
+
+    try {
+        throw new Error("WRONG")
+
+    res.send("User Data Sent");
+    } catch (error) {
+        res.status(500).send("Some Error ")
+    }
+    
 })
 
-app.get("/admin/deleteUser", (req,res)=> {
- res.send("Deleted a user")
-})
+
  
 app.listen(7777, () => {
     console.log("Server is running")
